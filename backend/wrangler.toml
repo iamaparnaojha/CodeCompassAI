@@ -1,0 +1,23 @@
+name = "openroad-agent-api"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+[vars]
+ENVIRONMENT = "development"
+
+# Secrets are set via `wrangler secret put <KEY>`
+# Required secrets:
+# - GITHUB_TOKEN
+# - GEMINI_API_KEY
+# - MONGODB_URI
+# - SNOWFLAKE_ACCOUNT
+# - SNOWFLAKE_USER
+# - SNOWFLAKE_PASSWORD
+# - ELEVENLABS_API_KEY
+
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Enable Node.js compatibility for MongoDB driver
+node_compat = true
