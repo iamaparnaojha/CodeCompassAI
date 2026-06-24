@@ -37,7 +37,7 @@ async function connectToDatabase(env: Env) {
     await cachedClient.connect();
 
     // Extract database name from URI or use default
-    const dbName = env.MONGODB_URI.match(/\.net\/([^?]+)/)?.[1] || 'openroad';
+    const dbName = env.MONGODB_URI.match(/\.net\/([^?]+)/)?.[1] || 'codecompassai';
     cachedDb = cachedClient.db(dbName);
 
     console.log('✅ Connected to MongoDB Atlas successfully');
@@ -138,6 +138,12 @@ export async function getRecentRoadmaps(
 ): Promise<Roadmap[]> {
   try {
     const collection = await getCollection(env);
+
+    if (!collection || !mongoAvailable) {
+      // Use in-memory storage
+      return Array.from(inMemoryStorage.values()).slice(0, limit);
+    }
+
     const roadmaps = await collection
       .find({})
       .sort({ createdAt: -1 })
@@ -147,7 +153,7 @@ export async function getRecentRoadmaps(
     return roadmaps as Roadmap[];
   } catch (error) {
     console.error('Get recent roadmaps error:', error);
-    return [];
+    return Array.from(inMemoryStorage.values()).slice(0, limit);
   }
 }
 
@@ -159,6 +165,11 @@ export async function updateRoadmap(
   try {
     const { ObjectId } = await import('mongodb');
     const collection = await getCollection(env);
+
+    if (!collection || !mongoAvailable) {
+      console.warn('MongoDB unavailable — cannot update roadmap');
+      return false;
+    }
 
     const result = await collection.updateOne(
       { _id: new ObjectId(id) },
@@ -181,6 +192,17 @@ export async function deleteRoadmap(id: string, env: Env): Promise<boolean> {
   try {
     const { ObjectId } = await import('mongodb');
     const collection = await getCollection(env);
+
+    if (!collection || !mongoAvailable) {
+      // Try deleting from in-memory
+      for (const [key, val] of inMemoryStorage.entries()) {
+        if (val._id === id) {
+          inMemoryStorage.delete(key);
+          return true;
+        }
+      }
+      return false;
+    }
 
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount > 0;

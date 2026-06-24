@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
-import type { Env, Roadmap, ApiResponse } from '../types/index.js';
+import type { AppEnv, Roadmap, ApiResponse } from '../types/index.js';
 import {
   fetchGitHubRepo,
   analyzeWithGemini,
@@ -10,7 +10,7 @@ import {
   getCachedRoadmap,
 } from '../services/index.js';
 
-const analyzeRoute = new Hono<{ Bindings: Env }>();
+const analyzeRoute = new Hono<AppEnv>();
 
 // Request validation schema
 const analyzeRequestSchema = z.object({
@@ -27,7 +27,7 @@ analyzeRoute.post(
   zValidator('json', analyzeRequestSchema),
   async (c) => {
     const { githubUrl, forceRefresh } = c.req.valid('json');
-    const env = c.env;
+    const env = c.get('env');
 
     try {
       // Check for cached roadmap first (unless force refresh is requested)
@@ -99,7 +99,7 @@ analyzeRoute.post(
 analyzeRoute.get('/:owner/:repo', async (c) => {
   const { owner, repo } = c.req.param();
   const githubUrl = `https://github.com/${owner}/${repo}`;
-  const env = c.env;
+  const env = c.get('env');
 
   try {
     // Check for cached roadmap

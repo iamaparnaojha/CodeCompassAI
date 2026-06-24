@@ -1,11 +1,10 @@
-version: '3.8'
 
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: openroad-backend
+    container_name: codecompassai-backend
     ports:
       - "8787:8787"
     environment:
@@ -18,9 +17,10 @@ services:
       - SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT:-}
       - SNOWFLAKE_USER=${SNOWFLAKE_USER:-}
       - SNOWFLAKE_PASSWORD=${SNOWFLAKE_PASSWORD:-}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}
     restart: unless-stopped
     networks:
-      - openroad-network
+      - codecompassai-network
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8787/"]
       interval: 30s
@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_API_URL=http://localhost:8787
-    container_name: openroad-frontend
+    container_name: codecompassai-frontend
     ports:
       - "3000:3000"
     environment:
@@ -46,7 +46,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     networks:
-      - openroad-network
+      - codecompassai-network
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
       interval: 30s
@@ -55,5 +55,5 @@ services:
       start_period: 40s
 
 networks:
-  openroad-network:
+  codecompassai-network:
     driver: bridge

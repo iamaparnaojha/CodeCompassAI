@@ -1,13 +1,13 @@
 import { Hono } from 'hono';
-import type { Env, ApiResponse, Roadmap } from '../types/index.js';
+import type { AppEnv, ApiResponse, Roadmap } from '../types/index.js';
 import { getRecentRoadmaps, getRoadmapByUrl, deleteRoadmap } from '../services/index.js';
 
-const roadmapsRoute = new Hono<{ Bindings: Env }>();
+const roadmapsRoute = new Hono<AppEnv>();
 
 // GET /api/roadmaps - Get recent roadmaps
 roadmapsRoute.get('/', async (c) => {
   const limit = parseInt(c.req.query('limit') || '10', 10);
-  const env = c.env;
+  const env = c.get('env');
 
   try {
     const roadmaps = await getRecentRoadmaps(Math.min(limit, 50), env);
@@ -32,7 +32,7 @@ roadmapsRoute.get('/', async (c) => {
 // GET /api/roadmaps/url - Get roadmap by GitHub URL
 roadmapsRoute.get('/url', async (c) => {
   const githubUrl = c.req.query('url');
-  const env = c.env;
+  const env = c.get('env');
 
   if (!githubUrl) {
     return c.json<ApiResponse<never>>(
@@ -77,7 +77,7 @@ roadmapsRoute.get('/url', async (c) => {
 // DELETE /api/roadmaps/:id - Delete a roadmap
 roadmapsRoute.delete('/:id', async (c) => {
   const id = c.req.param('id');
-  const env = c.env;
+  const env = c.get('env');
 
   try {
     const deleted = await deleteRoadmap(id, env);

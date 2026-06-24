@@ -1,4 +1,4 @@
-name = "openroad-agent-api"
+name = "codecompassai-api"
 main = "src/index.ts"
 compatibility_date = "2024-05-01"
 

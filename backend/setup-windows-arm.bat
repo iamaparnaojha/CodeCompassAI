@@ -1,6 +1,6 @@
 @echo off
 echo ===============================================
-echo OpenRoad Agent - Backend Setup
+echo CodeCompassAI - Backend Setup
 echo ===============================================
 echo.
 echo NOTE: Windows ARM64 is not supported for local development.

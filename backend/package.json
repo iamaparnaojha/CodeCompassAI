@@ -1,7 +1,7 @@
 {
-  "name": "openroad-agent-backend",
+  "name": "codecompassai-backend",
   "version": "1.0.0",
-  "description": "OpenRoad Agent Backend - Node.js with Hono.js",
+  "description": "CodeCompassAI Backend - Node.js with Hono.js",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",

@@ -63,7 +63,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-hacker-text flex items-center gap-2">
-                  OpenRoad Agent
+                  CodeCompassAI
                   <span className="text-xs px-2 py-0.5 rounded-full bg-hacker-primary/20 text-hacker-primary">
                     v1.0
                   </span>

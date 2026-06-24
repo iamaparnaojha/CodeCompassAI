@@ -32,7 +32,7 @@ export function LoadingState({
           <div className="flex items-center gap-2 mb-3">
             <Terminal className="w-4 h-4 text-hacker-primary" />
             <span className="text-xs text-hacker-text-muted terminal-text">
-              openroad-agent
+              codecompassai
             </span>
           </div>
           <div className="space-y-2 terminal-text text-sm">

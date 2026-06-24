@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'OpenRoad Agent - Hacker Onboarding Platform',
+  title: 'CodeCompassAI - Hacker Onboarding Platform',
   description: 'Generate personalized contribution roadmaps for open source projects',
   keywords: ['open source', 'github', 'contribution', 'roadmap', 'onboarding'],
 };

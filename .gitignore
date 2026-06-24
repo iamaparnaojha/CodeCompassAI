@@ -1,4 +1,6 @@
-# Root .gitignore for OpenRoad Agent
+# Root .gitignore
+
+deployment_guide.md
 
 # Dependencies
 node_modules/

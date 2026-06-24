@@ -36,12 +36,6 @@ app.use('*', async (c, next) => {
   await next();
 });
 
-// Helper to get env from context
-app.use('*', async (c, next) => {
-  c.env = c.get('env') as Env;
-  await next();
-});
-
 // Global middleware
 app.use('*', logger());
 app.use('*', prettyJSON());
@@ -51,7 +45,7 @@ app.use('*', secureHeaders());
 app.use(
   '*',
   cors({
-    origin: ['http://localhost:3000', 'https://openroad-agent.vercel.app'],
+    origin: ['http://localhost:3000', 'https://codecompassai.vercel.app'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     exposeHeaders: ['Content-Length'],
@@ -63,7 +57,7 @@ app.use(
 // Health check endpoint
 app.get('/', (c) => {
   return c.json({
-    name: 'OpenRoad Agent API',
+    name: 'CodeCompassAI API',
     version: '1.0.0',
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -111,6 +105,6 @@ serve({
   port,
 });
 
-console.log(`🚀 OpenRoad Agent API running on http://localhost:${port}`);
+console.log(`🚀 CodeCompassAI API running on http://localhost:${port}`);
 
 export default app;

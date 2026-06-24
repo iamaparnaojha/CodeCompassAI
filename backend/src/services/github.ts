@@ -67,7 +67,7 @@ async function fetchWithAuth(
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github.v3+json',
-      'User-Agent': 'OpenRoad-Agent/1.0',
+      'User-Agent': 'CodeCompassAI/1.0',
     },
   });
 }

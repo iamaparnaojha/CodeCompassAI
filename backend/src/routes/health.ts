@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
-import type { Env, ApiResponse, HealthMetrics } from '../types/index.js';
+import type { AppEnv, ApiResponse, HealthMetrics } from '../types/index.js';
 import { getFileHealthMetrics, getRepoHealthOverview } from '../services/index.js';
 
-const healthRoute = new Hono<{ Bindings: Env }>();
+const healthRoute = new Hono<AppEnv>();
 
 // POST /api/health/files - Get health metrics for specific files
 healthRoute.post('/files', async (c) => {
@@ -10,7 +10,7 @@ healthRoute.post('/files', async (c) => {
     files: string[];
     repoName: string;
   }>();
-  const env = c.env;
+  const env = c.get('env');
 
   if (!body.files || !Array.isArray(body.files) || body.files.length === 0) {
     return c.json<ApiResponse<never>>(
@@ -62,7 +62,7 @@ healthRoute.post('/files', async (c) => {
 // GET /api/health/repo/:repoName - Get repository health overview
 healthRoute.get('/repo/:repoName', async (c) => {
   const repoName = c.req.param('repoName');
-  const env = c.env;
+  const env = c.get('env');
 
   try {
     const overview = await getRepoHealthOverview(repoName, env);

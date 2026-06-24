@@ -1,10 +1,10 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
-import type { Env, ApiResponse, VoiceResponse } from '../types/index.js';
+import type { AppEnv, ApiResponse, VoiceResponse } from '../types/index.js';
 import { generateMentorIntro, streamVoiceAudio } from '../services/index.js';
 
-const voiceRoute = new Hono<{ Bindings: Env }>();
+const voiceRoute = new Hono<AppEnv>();
 
 // Request validation schema
 const voiceRequestSchema = z.object({
@@ -23,7 +23,7 @@ voiceRoute.post(
   zValidator('json', voiceRequestSchema),
   async (c) => {
     const { architectureSummary, repoName } = c.req.valid('json');
-    const env = c.env;
+    const env = c.get('env');
 
     try {
       const voiceResponse = await generateMentorIntro(
@@ -60,7 +60,7 @@ voiceRoute.post(
   zValidator('json', customVoiceSchema),
   async (c) => {
     const { text, voiceId } = c.req.valid('json');
-    const env = c.env;
+    const env = c.get('env');
 
     try {
       const stream = await streamVoiceAudio(text, env, voiceId);
@@ -97,7 +97,7 @@ voiceRoute.post(
 voiceRoute.get('/stream', async (c) => {
   const text = c.req.query('text');
   const voiceId = c.req.query('voiceId');
-  const env = c.env;
+  const env = c.get('env');
 
   if (!text || text.length < 10) {
     return c.json<ApiResponse<never>>(

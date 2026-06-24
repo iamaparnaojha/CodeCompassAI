@@ -1,8 +1,16 @@
-// Type definitions for OpenRoad Agent
+// Type definitions for CodeCompassAI
+
+// Hono context type — use Variables (not Bindings) for Node.js runtime
+export type AppEnv = {
+  Variables: {
+    env: Env;
+  };
+};
 
 export interface Env {
   GITHUB_TOKEN: string;
   GEMINI_API_KEY: string;
+  GEMINI_MODEL?: string;
   MONGODB_URI: string;
   SNOWFLAKE_ACCOUNT: string;
   SNOWFLAKE_USER: string;
