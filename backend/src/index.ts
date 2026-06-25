@@ -45,7 +45,7 @@ app.use('*', secureHeaders());
 app.use(
   '*',
   cors({
-    origin: ['http://localhost:3000', 'https://codecompassai.vercel.app'],
+    origin: ['http://localhost:3000', 'https://code-compass-ai-vert.vercel.app'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     exposeHeaders: ['Content-Length'],
@@ -86,7 +86,7 @@ app.notFound((c) => {
 app.onError((err, c) => {
   console.error('Unhandled error:', err);
   const environment = c.get('env')?.ENVIRONMENT || 'production';
-  
+
   return c.json(
     {
       success: false,
